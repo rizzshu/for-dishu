@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Dishu 🎀</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f2;
+            text-align: center;
+            padding: 50px;
+            transition: background 0.5s ease-in-out;
+        }
+        .popup, .start-screen {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .popup.show, .start-screen.show {
+            display: block;
+            opacity: 1;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        .bear-container {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+            transition: transform 0.5s ease-in-out;
+        }
+        #no-button {
+            transition: transform 0.3s ease-in-out, font-size 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="start-screen" class="start-screen show">
+        <p>A small surprise for you, Dishu! 🎀</p>
+        <button onclick="startStory()">Tap to continue</button>
+    </div>
+    
+    <div id="popup" class="popup">
+        <div class="bear-container" id="bear">🐨</div>
+        <p id="message"></p>
+        <div class="buttons">
+            <button onclick="nextMessage()">Next</button>
+        </div>
+    </div>
+    
+    <div id="forgive-popup" class="popup">
+        <div class="bear-container">
+            <span id="bear-face" class="bear">🐨</span>
+        </div>
+        <p id="forgive-message">Forgive me?</p>
+        <button onclick="forgiveMe(true)">Yes</button>
+        <button id="no-button" onclick="forgiveMe(false)">No</button>
+    </div>
+    
+    <script>
+        const messages = [
+            "Okay, I may have been the silliest person alive yesterday, but hear me out, Dishu...",
+            "So... remember last night? Yeah, turns out I was jealous for absolutely no reason. Classic me, right? My detective skills? Zero. My overthinking? Max level.",
+            "But hey, I never said I was smart… just hopelessly Rishu.",
+            "Jokes aside, I guess I just really like you.",
+            "Not in a ‘controlling who you talk to’ way. Just in a ‘I kinda wanna keep you all to myself, but I know I can't’ way.",
+            "And that's because you're special. Not just to anyone, but to me.",
+            "So if I ever act dumb again (high chances), just know—it's never about stopping you from being you. It's just about me being... well, me. And you? You’ll always be Dishu. And that’s more than enough.",
+            "I love you, Dishu. 🎀"
+        ];
+        let currentIndex = 0;
+
+        function startStory() {
+            document.getElementById("start-screen").classList.remove("show");
+            setTimeout(() => {
+                document.getElementById("popup").classList.add("show");
+                document.getElementById("message").innerText = messages[currentIndex];
+            }, 500);
+        }
+
+        function nextMessage() {
+            currentIndex++;
+            if (currentIndex < messages.length) {
+                document.getElementById("message").innerText = messages[currentIndex];
+                document.getElementById("bear").style.transform = `translateX(-50%) translateY(${Math.random() * 10 - 5}px)`;
+            } else {
+                document.getElementById("popup").classList.remove("show");
+                setTimeout(() => {
+                    document.getElementById("forgive-popup").classList.add("show");
+                }, 500);
+            }
+        }
+
+        let noCount = 0;
+        function forgiveMe(isYes) {
+            const bearFace = document.getElementById("bear-face");
+            const noButton = document.getElementById("no-button");
+            if (isYes) {
+                document.getElementById("forgive-message").innerText = "Yay! 😍";
+                bearFace.innerText = "🥰";
+                bearFace.style.transform = "scale(1.2)";
+            } else {
+                noCount++;
+                document.getElementById("forgive-message").innerText = "Please ".repeat(noCount).trim();
+                bearFace.innerText = "🥺";
+                bearFace.style.transform = `scale(${1 - noCount * 0.1})`;
+                noButton.style.transform = `scale(${1 - noCount * 0.1})`;
+                noButton.style.fontSize = `${16 - noCount}px`;
+                if (noCount >= 7) {
+                    noButton.innerText = "👉🏻👈🏻";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
